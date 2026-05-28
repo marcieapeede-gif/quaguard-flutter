@@ -10,51 +10,75 @@ AquaGuard is a comprehensive Flutter mobile application designed for real-time m
 - **Splash Screen** - Branded app introduction
 - **User Authentication** - Secure login system
 - **Real-time Dashboard** - Live sensor data display
-  - Temperature monitoring
-  - pH level tracking
-  - Oxygen level measurement
+  - Temperature monitoring (with charts)
+  - pH level tracking (with charts)
+  - Oxygen level measurement (with bar charts)
   - Fish count management
 - **Pond Management** - Detailed pond information and metrics
-- **Reports & Analytics** - Growth tracking and analysis
+- **Reports & Analytics** - Growth tracking with live charts
+  - Temperature trend visualization
+  - pH level trend visualization
+  - Oxygen level trend visualization
+  - Weekly performance summary
+- **Dark Mode Support** - Complete dark/light theme toggle
 - **Settings & Configuration** - User preferences and account management
 - **Bottom Navigation** - Easy navigation between screens
+- **State Management** - Provider-based state management
 
-### 🔜 Coming Soon
+### 🔔 Advanced Features (Ready to Implement)
 - Firebase real-time database integration
-- Live charts and graphs (fl_chart)
+- Firebase Cloud Messaging notifications
 - SMS/Email notifications
 - ESP32 sensor connectivity
 - AI-powered predictions
-- Dark mode support
 - Multi-language support
+
+## 📊 Charts & Visualization
+
+The app includes advanced charts using **fl_chart**:
+- **Line Charts** - Temperature and pH trends
+- **Bar Charts** - Oxygen level distribution
+- **Real-time Updates** - Live data visualization
+- **Historical Data** - Week/Month/Year analytics
+
+## 🎨 Dark Mode
+
+- Automatic theme switching
+- Persistent user preference (SharedPreferences)
+- Material Design 3 themes
+- Smooth transitions between themes
 
 ## 📁 Project Structure
 
 ```
 aquaguard-flutter/
 ├── lib/
-│   ├── main.dart                 # App entry point
+│   ├── main.dart                      # App entry point with theme support
 │   ├── screens/
 │   │   ├── splash_screen.dart
 │   │   ├── login_screen.dart
 │   │   ├── dashboard.dart
 │   │   ├── home_screen.dart
 │   │   ├── pond_screen.dart
-│   │   ├── reports_screen.dart
-│   │   └── settings_screen.dart
+│   │   ├── reports_screen.dart        # Updated with charts
+│   │   └── settings_screen.dart       # Updated with dark mode
 │   ├── widgets/
-│   │   └── sensor_card.dart
+│   │   ├── sensor_card.dart
+│   │   ├── temperature_chart.dart     # NEW: Line chart for temperature
+│   │   ├── ph_level_chart.dart        # NEW: Line chart for pH
+│   │   └── oxygen_chart.dart          # NEW: Bar chart for oxygen
 │   ├── models/
 │   │   ├── sensor_data.dart
 │   │   └── pond.dart
 │   ├── providers/
-│   │   └── app_provider.dart
+│   │   ├── app_provider.dart
+│   │   ├── theme_provider.dart        # NEW: Dark mode management
+│   │   └── sensor_provider.dart       # NEW: Sensor data management
 │   └── services/
-│       └── api_service.dart
+│       ├── api_service.dart
+│       ├── firebase_service.dart      # NEW: Firebase integration
+│       └── notification_service.dart  # NEW: Push notifications
 ├── assets/
-│   ├── images/
-│   ├── icons/
-│   └── fonts/
 ├── pubspec.yaml
 ├── analysis_options.yaml
 └── README.md
@@ -72,7 +96,7 @@ aquaguard-flutter/
 - **firebase_storage** ^11.5.0 - File storage
 
 ### UI & Charts
-- **fl_chart** ^0.63.0 - Beautiful charts
+- **fl_chart** ^0.63.0 - Beautiful charts and graphs
 - **intl** ^0.19.0 - Internationalization
 
 ### Networking
@@ -118,47 +142,32 @@ aquaguard-flutter/
    flutter run
    ```
 
-## 🔐 Security Considerations
+## 🔐 Firebase Setup (Next Steps)
 
-- Keep Firebase credentials in `.env` file (never commit)
-- Use environment variables for API endpoints
-- Implement proper authentication and authorization
-- Validate all user inputs
-- Use HTTPS for all API communications
+1. **Create Firebase Project**
+   - Go to [Firebase Console](https://console.firebase.google.com)
+   - Create a new project: "AquaGuard"
 
-## 📚 File Descriptions
+2. **Add Android App**
+   - Register app with package: `com.aquaguard.app`
+   - Download `google-services.json`
+   - Place in `android/app/`
 
-### Screens
-- `splash_screen.dart` - Loading screen with app branding
-- `login_screen.dart` - User authentication interface
-- `dashboard.dart` - Main navigation hub
-- `home_screen.dart` - Real-time sensor data display
-- `pond_screen.dart` - Detailed pond management
-- `reports_screen.dart` - Analytics and reports
-- `settings_screen.dart` - User preferences
+3. **Add iOS App**
+   - Register iOS app
+   - Download `GoogleService-Info.plist`
+   - Add to Xcode project
 
-### Models
-- `sensor_data.dart` - Sensor reading data model
-- `pond.dart` - Pond information model
+4. **Enable Services**
+   - Realtime Database
+   - Cloud Messaging
+   - Authentication
 
-### Services
-- `api_service.dart` - HTTP API communication layer
+## 🔔 Notification Setup
 
-### Providers
-- `app_provider.dart` - Global app state management
-
-## 🎨 UI/UX Features
-
-- Modern Material Design 3
-- Responsive layout for all screen sizes
-- Intuitive bottom navigation
-- Color-coded sensor indicators
-- Accessible components
-- Smooth transitions and animations
-
-## 🔗 API Integration
-
-The app uses a REST API for backend communication. Update the `_baseUrl` in `lib/services/api_service.dart` with your actual API endpoint.
+1. Enable Firebase Cloud Messaging
+2. Update `notification_service.dart` with FCM implementation
+3. Add flutter_local_notifications package
 
 ## 📊 Database Schema (Firebase)
 
@@ -168,9 +177,57 @@ Ponds/
 │   ├── name: string
 │   ├── fishType: string
 │   ├── fishCount: number
-│   └── sensorData
+│   └── sensorData/
 │       └── {sensorId}: SensorData
+└── Users/
+    └── {userId}
+        ├── email: string
+        ├── name: string
+        └── preferences: {}
 ```
+
+## 🎨 Theme System
+
+### Light Theme
+- Primary Color: Teal
+- Background: Light gray
+- Text: Dark
+
+### Dark Theme
+- Primary Color: Dark Teal
+- Background: #121212
+- Text: Light
+
+### Switching Themes
+- Toggle in Settings > Dark Mode
+- Preference saved automatically
+
+## 🧪 Testing
+
+```bash
+# Run tests
+flutter test
+
+# Generate coverage report
+flutter test --coverage
+```
+
+## 🔒 Security Considerations
+
+- Keep Firebase credentials in `.env` file (never commit)
+- Use environment variables for API endpoints
+- Implement proper authentication and authorization
+- Validate all user inputs
+- Use HTTPS for all API communications
+- Secure sensor data with encryption
+
+## 📈 Performance Optimization
+
+- Lazy loading of charts
+- Efficient sensor data streaming
+- Optimized build methods
+- Image caching
+- Database query optimization
 
 ## 🤝 Contributing
 
@@ -193,8 +250,11 @@ For questions or support, please contact: [your-email@example.com]
 
 - Flutter team for the amazing framework
 - Firebase for backend services
+- fl_chart for beautiful visualizations
 - Community contributors and testers
 
 ---
 
-**Happy Farming! 🐠💧**
+**Happy Farming! 🐟💧**
+
+*Last Updated: May 28, 2026*
